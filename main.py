@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 def main():
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
@@ -9,10 +10,12 @@ def main():
     dst = os.path.join(output_dir, "entry.png")
 
     if not os.path.isfile(src):
-        raise FileNotFoundError(f"Source entry image not found: {src}")
+        sys.stderr.write(f"Error: source entry image not found: {src}\n")
+        sys.exit(1)
 
     shutil.copyfile(src, dst)
-    print(f"Successfully copied {src} -> {dst}")
+    size = os.path.getsize(dst)
+    print(f"Copied entry image to {dst} ({size} bytes)")
 
 if __name__ == "__main__":
     main()
